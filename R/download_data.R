@@ -1,11 +1,9 @@
-#' Classify mutations using a Beta-Binomial model-based test.
+#' Download data from cBioPortal
 #'
-#' @param
-#' @return
+#' @param study The identifier of the study on cBioPortal
+#' @return A MultiAssayExperiment object
 #' @export
-#' @examples
-#' print(x)
-#' @importFrom dplyr filter mutate rename select %>%
+#' @importFrom cBioPortalData cBioDataPack
 
 download_data = function(study = "msk_chord_2024"){
 

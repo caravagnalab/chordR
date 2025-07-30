@@ -1,3 +1,7 @@
+#' Tests 
+#' @import MultiAssayExperiment
+
+
 experiments(x = msk_chord)
 
 

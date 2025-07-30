@@ -36,4 +36,4 @@ msk_chord@metadata$timeline_gleason %>%
 
 xx@metadata$timeline_progression %>% as_tibble()
 
-msk_chord@metadata$ %>% as_tibble()
+msk_chord@metadata %>% as_tibble()

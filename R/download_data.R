@@ -8,4 +8,5 @@
 download_data = function(study = "msk_chord_2024"){
 
   msk_chord = cBioPortalData::cBioDataPack(study, ask = FALSE)
+  return(msk_chord)
 }

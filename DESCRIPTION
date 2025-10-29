@@ -1,21 +1,17 @@
 Package: chordR
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: MSK-CHORD Cancer Dataset Analysis Tools
+Version: 0.0.1.000
 Authors@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: Access and analyse the Memorial Sloan Kettering Cancer Center's Clinicogenomic Harmonised Oncologic Real-world Dataset (MSK-CHORD). Provides functions for downloading, extracting timeline data, filtering, survival analysis, and visualisation of integrated cancer data.
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Imports: 
-    cBioPortalData,
-    MultiAssayExperiment,
-    methods,
-    ggplot2,
-    dplyr,
-    shiny,
-    DT,
-    plotly
+RoxygenNote: 7.3.3
+Imports:
+    magrittr,
+    methods
 Suggests:
-    plotly
+    testthat,
+    ggplot2,
+    RaggedExperiment
+URL: https://github.com/caravagnalab/chordR

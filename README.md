@@ -14,7 +14,7 @@ MSK-CHORD is a groundbreaking dataset that combines:
 ### Dataset Composition
 The dataset includes 24,950 patients across five principal cancer types:
 
-| Cancer Type | Number of Patients |
+| Cancer Type | Samples |
 |-------------|--------------------|
 | Non-Small Cell Lung Cancer (NSCLC) | 7,809 |
 | Breast Cancer | 5,368 |
@@ -63,7 +63,24 @@ msk_data <- download_msk_chord(
 * `cache_dir`: Optional directory for caching downloaded data
 * `force_refresh`: Force re-download even if cached data exists (default: FALSE)
 
-**Returns:** A `MultAssayExperiment` object containing all MSK-CHORD data.
+**Returns:** A `MultiAssayExperiment` object containing all MSK-CHORD data.
+
+```
+A MultiAssayExperiment object of 3 listed
+ experiments with user-defined names and respective classes.
+ Containing an ExperimentList class object of length 3:
+ [1] cna_hg19.seg: RaggedExperiment with 1341423 rows and 24870 columns
+ [2] cna: SummarizedExperiment with 702 rows and 25034 columns
+ [3] mutations: RaggedExperiment with 208544 rows and 23867 columns
+Functionality:
+ experiments() - obtain the ExperimentList instance
+ colData() - the primary/phenotype DataFrame
+ sampleMap() - the sample coordination DataFrame
+ `$`, `[`, `[[` - extract colData columns, subset, or experiment
+ *Format() - convert into a long or wide DataFrame
+ assays() - convert ExperimentList to a SimpleList of matrices
+ exportClass() - save data to flat files
+```
 
 ### 2. Timeline Data Extraction
 `extract_msk_timeline()`
@@ -131,7 +148,7 @@ filtered <- filter_timeline(
 
 **Parameters:**
 * `timeline_obj`: MSKTimeline object
-* `patients`: Characyer vector of patient IDs
+* `patients`: Character vector of patient IDs
 * `date_range`: Numeric vector of length 2: c(min_days, max_days)
 * `event_types`: Character vector of event types to include
 
@@ -165,7 +182,7 @@ Filter INCOMMON data for specific genes of interest.
 
 ```R
 # filter for common cancer genes
-filtered <-- filter_by_genes(
+filtered <- filter_by_genes(
     incommon_data,
     genes = c("TP53", "PIK3CA", "KRAS", "PTEN")
 )
@@ -233,7 +250,7 @@ verify_incommon_data(incommon_data)
 
 **Returns:** An `incommon_ready` object containing:
 * `$mutations`: Data frame with mutation data
-    * `Hugo_symbol`: Gene Symbol
+    * `Hugo_Symbol`: Gene Symbol
     * `SAMPLE_ID`, `PATIENT_ID`: Identifiers
     * `t_alt_count`: Variant read count
     * `t_ref_count`: Reference read count
@@ -247,7 +264,7 @@ verify_incommon_data(incommon_data)
 **Data Quality**:
 * Automatically calculates depths from alt + ref counts
 * filters for complete cases
-* Ensures non-negative depths and valid VAF ranges
+* Ensure non-negative depths and VAF in [0,1]
 
 ___________________________________________________________________
 
@@ -325,7 +342,7 @@ ____
 
 It is needed two data frames:
 
-**genmic_data (mandatory)**:
+**genomic_data (mandatory)**:
 
 * sample (Sample ID)
 * chr (chromosome)
@@ -604,7 +621,7 @@ The expected value $\lambda$ is contributed by reads from the normal cells, pres
 
 Given the total read count $d_i$, the number of reads with the variant $r_i$ follows a Binomial distribution:
 
-$$p(r_i | \pi, k_i, m_i) = Poisson(r_i | d_i, \varphi)$$
+$$p(r_i | \pi, k_i, m_i) = Binomial(r_i | d_i, \varphi)$$
 
 where $$\varphi = \frac{m \pi}{2(1-\pi) + k \pi}$$
 
@@ -631,7 +648,7 @@ After preparing data with `chordR`, we have:
 # for each mutation i:
 r_i <- incommon_data$mutations$t_alt_count # Variant reads
 d_i <- incommon_data$mutations$t_depth     # Total depth
-pi  <- incommon_data$mutations$PURITY/100  # Tumor purity (as fraction)
+pi  <- incommon_data$mutations$PURITY      # Tumor purity (as fraction)
 k_i <- incommon_data$mutations$k_total     # Copy number
 
 # sample-level parameter:
@@ -687,7 +704,7 @@ Elements:
 Class: list with class "incommon_ready"
 Elements:
     $mutations     : data frame with columns:
-                     - Hugo_symbol, SAMPLE_ID, PATIENT_ID
+                     - Hugo_Symbol, SAMPLE_ID, PATIENT_ID
                      - t_alt_count, t_ref_count, t_depth
                      - VAF, PURITY
                      - copy_number, absolute_cn, k_total (after add_copy_number)
@@ -774,7 +791,7 @@ Issue: "Maximum upload size exceeded" (Shiny App)
 
 ```R
 # solution: filter data before loading
-filtered <- filter_by_genes(incommon_datam, genes = c("TP53", "KRAS"))
+filtered <- filter_by_genes(incommon_data, genes = c("TP53", "KRAS"))
 # use filtered data in app
 ```
 

@@ -121,7 +121,7 @@ chordr_to_incommon <- function(incommon_data, cohort) {
         
         # === PURITY  ===
         purity = if("TUMOR_PURITY" %in% names(.)) {
-          TUMOR_PURITY / 100 # fraction 
+          TUMOR_PURITY # already in fraction 
         } else {
           NA_real_
         },
@@ -336,9 +336,8 @@ chordr_to_incommon <- function(incommon_data, cohort) {
   }
 
   # verify purity is in fraction format
-  if (any(clinical_data$purity > 1, na.rn = TRUE)) {
-    warning("⚠️ - Some purity values > 1 detected. Converting from percentage to fraction")
-    clinical_data$purity <- clinical_data$purity / 100
+  if (any(clinical_data$purity > 1, na.rm = TRUE)) {
+    warning("⚠️ - Some purity values > 1 detected. Values appear to be percentages (0-100). Do not auto-convert here because prepare_incommon_data should normalize purity to fraction (0-1).")
   }
   
   # TMB from mutations

@@ -338,7 +338,6 @@ chordr_to_incommon <- function(incommon_data, cohort) {
   # verify purity is in fraction format
   if (any(clinical_data$purity > 1, na.rm = TRUE)) {
     warning("⚠️ - Some purity values > 1 detected. Values appear to be percentages (0-100). Do not auto-convert here because prepare_incommon_data should normalize purity to fraction (0-1).")
-    clinical_data$purity <- clinical_data$purity / 100
   }
   
   # TMB from mutations
